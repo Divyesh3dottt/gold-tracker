@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gold Investment Tracker</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+    <style>
+        /* ---------- GLOBAL ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: radial-gradient(circle at top, #141e30, #243b55);
+            color: #eaeaea;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        /* ---------- HEADER ---------- */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            font-size: 1rem;
+            color: #b0b3b8;
+        }
+
+        /* ---------- GRID LAYOUT ---------- */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ---------- GLASS CARD ---------- */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+        }
+
+        /* ---------- INPUT ---------- */
+        .input-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 45px 12px 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 2px #ffd700;
+        }
+
+        .input-group i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ffd700;
+        }
+
+        /* ---------- BUTTONS ---------- */
+        .btn {
+            flex: 1;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 12px 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ffd700, #ffb700);
+            color: #222;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 15px #ffd700;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 0 15px rgba(255, 75, 43, 0.8);
+            transform: translateY(-2px);
+        }
+
+        /* ---------- PURCHASE LIST ---------- */
+        .purchase-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.08);
+            border-left: 4px solid #ffd700;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .purchase-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .purchase-amount {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffd700;
+        }
+
+        .purchase-meta {
+            text-align: right;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #ff6b6b;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .delete-btn:hover {
+            color: #ff1e56;
+            transform: scale(1.2);
+        }
+
+        /* ---------- SUMMARY ---------- */
+        .summary-section {
+            margin-top: 40px;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .summary-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .summary-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .summary-card h3 {
+            font-size: 1rem;
+            color: #ccc;
+        }
+
+        .summary-card .amount {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .summary-card #totalInvestment {
+            color: #00ff99;
+        }
+
+        .summary-card #totalGrams {
+            color: gold;
+        }
+
+        /* ---------- PROFIT SECTION ---------- */
+        .profit-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .profit {
+            color: #00ff99;
+        }
+
+        .loss {
+            color: #ff4b2b;
+        }
+
+        .no-purchases {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            padding: 20px;
+        }
+
+        /* ---------- FOOTER ---------- */
+        footer {
+            text-align: center;
+            padding: 15px 0;
+            font-size: 0.9rem;
+            color: #aaa;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fa-solid fa-coins" style="color: gold;"></i> Gold Tracker</h1>
+            <p style="margin-top: 10px;">Track your gold purchases and monitor profits in style</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Left -->
+            <div class="card">
+                <h3 style="margin-bottom: 10px;"><i class="fa-solid fa-broadcast-tower"></i> Live Gold Price</h3>
+                <div class="input-group">
+                    <input type="number" id="livePrice" placeholder="Current Price per 10gm (₹)" min="0" />
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div id="profitBreakdown" style="display:none; margin-top:15px;">
+                    <h3 style="margin-top: 30px; margin-bottom: 20px;"><i class="fa-solid fa-coins"></i> Profit
+                        Breakdown</h3>
+                    <div id="profitDetails" style="margin-top:10px;"></div>
+                </div>
+            </div>
+
+            <!-- Right -->
+            <div class="card">
+                <h3><i class="fa-solid fa-list"></i> Purchase History</h3>
+                <div id="purchasesContainer" style="margin-top:20px;"></div>
+                <h4 style="margin-top:15px; margin-bottom:10px;"><i class="fa-solid fa-plus-circle"></i> Add Purchase
+                </h4>
+                <div class="input-group">
+                    <input type="number" id="purchasePrice" placeholder="Purchase Price per 10gm (₹)" min="0" />
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="purchaseQty" placeholder="Quantity (grams)" min="1" />
+                    <i class="fa-solid fa-weight-scale"></i>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-primary" onclick="addPurchase()">
+                        <i class="fa-solid fa-cart-plus"></i> Add
+                    </button>
+                    <button class="btn btn-danger" onclick="clearAllPurchases()">
+                        <i class="fa-solid fa-trash"></i> Clear
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="summary-section">
+            <h2 style="text-align:center; margin-bottom:20px;">
+                <i class="fa-solid fa-chart-pie"></i> Investment Summary
+            </h2>
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <h3>Total Investment</h3>
+                    <div class="amount" id="totalInvestment">₹0</div>
+                </div>
+                <div class="summary-card">
+                    <h3>Total Gold</h3>
+                    <div class="amount" id="totalGrams">0g</div>
+                </div>
+                <div class="summary-card">
+                    <h3>Average Price</h3>
+                    <div class="amount" id="avgPrice">₹0/gm</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Developed by Divyesh Rupareliya
+    </footer>
+
+    <script>
+        let purchases = JSON.parse(localStorage.getItem("goldPurchases")) || [];
+        let livePrice = parseFloat(localStorage.getItem("liveGoldPrice")) || 0;
+
+        const purchaseInput = document.getElementById("purchasePrice");
+        const qtyInput = document.getElementById("purchaseQty");
+        const livePriceInput = document.getElementById("livePrice");
+        const purchasesContainer = document.getElementById("purchasesContainer");
+        const totalInvestmentEl = document.getElementById("totalInvestment");
+        const totalGramsEl = document.getElementById("totalGrams");
+        const avgPriceEl = document.getElementById("avgPrice");
+        const profitBreakdown = document.getElementById("profitBreakdown");
+        const profitDetails = document.getElementById("profitDetails");
+
+        document.addEventListener("DOMContentLoaded", () => {
+            if (livePrice) livePriceInput.value = livePrice;
+            displayPurchases();
+            calculateSummary();
+            calculateProfits();
+        });
+
+        function addPurchase() {
+            const price = parseFloat(purchaseInput.value);
+            const qty = parseFloat(qtyInput.value);
+            if (!price || price <= 0) return alert("Enter valid price per 10gm");
+            if (!qty || qty <= 0) return alert("Enter valid quantity (grams)");
+            const p = { id: Date.now(), price, grams: qty, date: new Date().toLocaleDateString() };
+            purchases.unshift(p);
+            localStorage.setItem("goldPurchases", JSON.stringify(purchases));
+            purchaseInput.value = "";
+            qtyInput.value = "";
+            displayPurchases();
+            calculateSummary();
+            calculateProfits();
+        }
+
+        function displayPurchases() {
+            if (!purchases.length) {
+                purchasesContainer.innerHTML =
+                    '<div class="no-purchases"><i class="fa-solid fa-inbox"></i> No purchases yet.</div>';
+                return;
+            }
+            purchasesContainer.innerHTML = purchases
+                .map(p => `
+          <div class="purchase-item">
+            <div>
+              <div class="purchase-amount">₹${p.price}</div>
+              <small>${p.grams}g • ${p.date}</small>
+            </div>
+            <div class="purchase-meta">
+              <button class="delete-btn" onclick="deletePurchase(${p.id})">
+                <i class="fa-solid fa-times"></i>
+              </button>
+            </div>
+          </div>`)
+                .join("");
+        }
+
+        function deletePurchase(id) {
+            if (!confirm("Delete this purchase?")) return;
+            purchases = purchases.filter(p => p.id !== id);
+            localStorage.setItem("goldPurchases", JSON.stringify(purchases));
+            displayPurchases();
+            calculateSummary();
+            calculateProfits();
+        }
+
+        function calculateSummary() {
+            const totalInvestment = purchases.reduce((a, b) => a + b.price * (b.grams / 10), 0);
+            const totalGrams = purchases.reduce((a, b) => a + b.grams, 0);
+            const avgPrice = totalGrams ? totalInvestment / totalGrams : 0;
+            totalInvestmentEl.textContent = `₹${totalInvestment.toLocaleString()}`;
+            totalGramsEl.textContent = `${totalGrams}g`;
+            avgPriceEl.textContent = `₹${Math.round(avgPrice)}/gm`;
+        }
+
+        function calculateProfits() {
+            livePrice = parseFloat(livePriceInput.value);
+            if (!livePrice || livePrice <= 0 || !purchases.length) {
+                profitBreakdown.style.display = "none";
+                return;
+            }
+            localStorage.setItem("liveGoldPrice", livePrice);
+
+            const totalInvestment = purchases.reduce((a, b) => a + b.price * (b.grams / 10), 0);
+            const totalCurrentValue = (livePrice / 10) * purchases.reduce((a, b) => a + b.grams, 0);
+            const totalProfit = totalCurrentValue - totalInvestment;
+            const totalProfitPercent = (totalProfit / totalInvestment) * 100;
+
+            const profitList = purchases.map(p => {
+                const currValue = (livePrice / 10) * p.grams;
+                const investValue = p.price * (p.grams / 10);
+                const profit = currValue - investValue;
+                const profitPercent = (profit / investValue) * 100;
+                return `
+            <div class="profit-item">
+              <span>₹${p.price} × ${p.grams}g</span>
+              <span class="${profit >= 0 ? "profit" : "loss"}">
+                ₹${Math.round(profit).toLocaleString()} (${profitPercent.toFixed(1)}%)
+              </span>
+            </div>`;
+            }).join("");
+
+            profitDetails.innerHTML = profitList +
+                `<div class="profit-item">
+                   <strong>Total Profit</strong>
+                   <strong class="${totalProfit >= 0 ? "profit" : "loss"}">
+                     ₹${Math.round(totalProfit).toLocaleString()} (${totalProfitPercent.toFixed(2)}%)
+                   </strong>
+                 </div>`;
+
+            profitBreakdown.style.display = "block";
+        }
+
+        function clearAllPurchases() {
+            if (!confirm("Clear all purchases?")) return;
+            purchases = [];
+            localStorage.clear();
+            displayPurchases();
+            calculateSummary();
+            profitBreakdown.style.display = "none";
+            livePriceInput.value = "";
+        }
+
+        livePriceInput.addEventListener("input", calculateProfits);
+    </script>
+</body>
+
+</html>
