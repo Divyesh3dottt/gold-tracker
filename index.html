@@ -65,24 +65,26 @@
             font-size:15px;padding:12px 18px;cursor:pointer;
             transition:all .3s;text-transform:uppercase;
         }
-        .btn-primary{background:linear-gradient(135deg,#ffd700,#ffb700);color:#222;}
-        .btn-primary:hover{box-shadow:0 0 15px #ffd700;transform:translateY(-2px);}
+        .btn-primary{background:linear-gradient(135deg,#28a745,#1e7e34);color:#fff;}
+        .btn-primary:hover{box-shadow:0 0 15px #28a745;transform:translateY(-2px);}
         .btn-danger{background:linear-gradient(135deg,#ff416c,#ff4b2b);color:#fff;}
         .btn-danger:hover{box-shadow:0 0 15px rgba(255,75,43,.8);transform:translateY(-2px);}
-        .btn-success{background:linear-gradient(135deg,#28a745,#1e7e34);color:#fff;}
-        .btn-success:hover{box-shadow:0 0 15px #28a745;transform:translateY(-2px);}
+        .btn-warning{background:linear-gradient(135deg,#dc3545,#c82333);color:#fff;}
+        .btn-warning:hover{box-shadow:0 0 15px #dc3545;transform:translateY(-2px);}
 
-        /* ---------- PURCHASE / SALE LIST ---------- */
-        .purchase-item,.sale-item{
+        /* ---------- TRANSACTION ITEM ---------- */
+        .transaction-item{
             display:flex;justify-content:space-between;align-items:center;
             background:rgba(255,255,255,0.08);
             border-left:4px solid #ffd700;
             border-radius:12px;padding:15px;margin-bottom:10px;
             transition:all .3s ease;
         }
-        .purchase-item:hover,.sale-item:hover{background:rgba(255,255,255,0.15);}
-        .purchase-amount,.sale-amount{font-size:1.1rem;font-weight:600;color:#ffd700;}
-        .purchase-meta,.sale-meta{text-align:right;}
+        .transaction-item:hover{background:rgba(255,255,255,0.15);}
+        .transaction-item.purchase{border-left-color:#00ff99;}
+        .transaction-item.sell{border-left-color:#ff4b2b;}
+        .transaction-amount{font-size:1.1rem;font-weight:600;color:#ffd700;}
+        .transaction-meta{text-align:right;}
         .delete-btn{background:none;border:none;color:#ff6b6b;font-size:1.2rem;cursor:pointer;transition:.2s;}
         .delete-btn:hover{color:#ff1e56;transform:scale(1.2);}
 
@@ -107,7 +109,7 @@
             border-bottom:1px solid rgba(255,255,255,0.1);}
         .profit{color:#00ff99;}
         .loss{color:#ff4b2b;}
-        .no-purchases,.no-sales{text-align:center;color:#999;font-style:italic;padding:20px;}
+        .no-transactions{text-align:center;color:#999;font-style:italic;padding:20px;}
 
         /* ---------- FOOTER ---------- */
         footer{
@@ -120,8 +122,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Gold Tracker</h1>
-            <p style="margin-top:10px;">Track purchases, sales and profit of **remaining** gold</p>
+            <h1><i class="fa-solid fa-coins" style="color: gold;"></i> Gold Tracker</h1>
+            <p style="margin-top: 10px;">Track your gold purchases and monitor profits in style</p>
         </div>
 
         <div class="main-content">
@@ -134,42 +136,30 @@
                 </div>
 
                 <div id="profitBreakdown" style="display:none; margin-top:15px;">
-                    <h3 style="margin-top:30px; margin-bottom:20px;">Profit Breakdown (Remaining Gold)</h3>
+                    <h3 style="margin-top:30px; margin-bottom:20px;">Current Investment</h3>
                     <div id="profitDetails" style="margin-top:10px;"></div>
                 </div>
             </div>
 
             <!-- Right -->
             <div class="card">
-                <h3>Purchase History</h3>
-                <div id="purchasesContainer" style="margin-top:20px;"></div>
-
-                <h4 style="margin-top:15px; margin-bottom:10px;">Add Purchase</h4>
-                <div class="input-group">
-                    <input type="number" id="purchasePrice" placeholder="Purchase Price per 10gm (₹)" min="0" />
-                    <i class="fa-solid fa-indian-rupee-sign"></i>
-                </div>
-                <div class="input-group">
-                    <input type="number" id="purchaseQty" placeholder="Quantity (grams)" min="1" />
-                    <i class="fa-solid fa-weight-scale"></i>
+                <h3>Add Transaction</h3>
+                <div class="input-group" style="margin-top:15px;">
+                    <input type="number" id="transactionQty" placeholder="Quantity (grams)" min="0.01" step="0.01" />
+                    <i class="fa-solid fa-coins"></i>
                 </div>
                 <div style="display:flex;gap:10px;">
-                    <button class="btn btn-primary" onclick="addPurchase()">Add</button>
-                    <button class="btn btn-danger" onclick="clearAllPurchases()">Clear</button>
+                    <button class="btn btn-primary" onclick="addPurchase()">Purchase</button>
+                    <button class="btn btn-danger" onclick="sellGold()">Sell</button>
                 </div>
-
-                <!-- ==== SELL SECTION ==== -->
-                <h4 style="margin-top:25px; margin-bottom:10px;">Sell Gold</h4>
-                <div class="input-group">
-                    <input type="number" id="sellQty" placeholder="Quantity to sell (grams)" min="0.01" step="0.01" />
-                    <i class="fa-solid fa-weight-scale"></i>
+                
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-top:30px;">
+                    <h3 style="margin: 0;">Transaction History</h3>
+                    <button onclick="clearAllPurchases()" style="background:none;border:none;padding:4px 8px;margin-left:10px;">
+                        <i class="fa-solid fa-trash" style="font-size:1.2rem;color:#ff4b2b;"></i>
+                    </button>
                 </div>
-                <div style="display:flex;gap:10px;">
-                    <button class="btn btn-success" onclick="sellGold()">Sell</button>
-                </div>
-
-                <h4 style="margin-top:20px; margin-bottom:10px;">Sale History</h4>
-                <div id="salesContainer" style="margin-top:10px;"></div>
+                <div id="transactionsContainer" style="margin-top:20px;"></div>
             </div>
         </div>
 
@@ -196,42 +186,38 @@
         let livePrice = parseFloat(localStorage.getItem("liveGoldPrice")) || 0;
 
         // ---------- ELEMENTS ----------
-        const purchaseInput   = document.getElementById("purchasePrice");
-        const qtyInput        = document.getElementById("purchaseQty");
-        const livePriceInput  = document.getElementById("livePrice");
-        const sellQtyInput    = document.getElementById("sellQty");
-        const purchasesContainer = document.getElementById("purchasesContainer");
-        const salesContainer     = document.getElementById("salesContainer");
-        const totalInvestmentEl  = document.getElementById("totalInvestment");
-        const totalGramsEl       = document.getElementById("totalGrams");
-        const realisedPLEl       = document.getElementById("realisedPL");
-        const unrealisedPLEl     = document.getElementById("unrealisedPL");
-        const totalPLEl          = document.getElementById("totalPL");
-        const currentValueEl     = document.getElementById("currentValue");
-        const breakEvenPriceEl   = document.getElementById("breakEvenPrice");
-        const profitBreakdown    = document.getElementById("profitBreakdown");
-        const profitDetails      = document.getElementById("profitDetails");
+        const transactionQtyInput   = document.getElementById("transactionQty");
+        const livePriceInput        = document.getElementById("livePrice");
+        const transactionsContainer = document.getElementById("transactionsContainer");
+        const totalInvestmentEl     = document.getElementById("totalInvestment");
+        const totalGramsEl          = document.getElementById("totalGrams");
+        const realisedPLEl          = document.getElementById("realisedPL");
+        const unrealisedPLEl        = document.getElementById("unrealisedPL");
+        const totalPLEl             = document.getElementById("totalPL");
+        const currentValueEl        = document.getElementById("currentValue");
+        const breakEvenPriceEl      = document.getElementById("breakEvenPrice");
+        const profitBreakdown       = document.getElementById("profitBreakdown");
+        const profitDetails         = document.getElementById("profitDetails");
 
         // ---------- INITIAL LOAD ----------
         document.addEventListener("DOMContentLoaded", () => {
             if (livePrice) livePriceInput.value = livePrice;
-            displayPurchases();
-            displaySales();
+            displayTransactions();
             calculateSummary();
             calculateProfits();
         });
 
         // ---------- PURCHASE ----------
         function addPurchase() {
-            const price = parseFloat(purchaseInput.value);
-            const qty   = parseFloat(qtyInput.value);
-            if (!price || price <= 0) return alert("Enter price per 10gm");
+            const qty = parseFloat(transactionQtyInput.value);
+            const price = parseFloat(livePriceInput.value);
+            if (!price || price <= 0) return alert("Enter live gold price first");
             if (!qty   || qty   <= 0) return alert("Enter quantity (grams)");
-            const p = { id: Date.now(), price, grams: qty, date: new Date().toLocaleDateString() };
+            const p = { id: Date.now(), price, grams: qty, date: new Date().toLocaleDateString(), type: 'purchase' };
             purchases.unshift(p);
             localStorage.setItem("goldPurchases", JSON.stringify(purchases));
-            purchaseInput.value = ""; qtyInput.value = "";
-            displayPurchases();
+            transactionQtyInput.value = "";
+            displayTransactions();
             calculateSummary();
             calculateProfits();
         }
@@ -240,46 +226,31 @@
             if (!confirm("Delete this purchase?")) return;
             purchases = purchases.filter(p => p.id !== id);
             localStorage.setItem("goldPurchases", JSON.stringify(purchases));
-            displayPurchases();
+            displayTransactions();
             calculateSummary();
             calculateProfits();
         }
 
-        function displayPurchases() {
-            if (!purchases.length) {
-                purchasesContainer.innerHTML = '<div class="no-purchases">No purchases yet.</div>';
-                return;
-            }
-            purchasesContainer.innerHTML = purchases.map(p => `
-                <div class="purchase-item">
-                    <div>
-                        <div class="purchase-amount">₹${p.price}</div>
-                        <small>${p.grams}g • ${p.date}</small>
-                    </div>
-                    <div class="purchase-meta">
-                        <button class="delete-btn" onclick="deletePurchase(${p.id})">X</button>
-                    </div>
-                </div>`).join("");
-        }
-
         // ---------- SELL ----------
         function sellGold() {
-            const qty = parseFloat(sellQtyInput.value);
+            const qty = parseFloat(transactionQtyInput.value);
+            const price = parseFloat(livePriceInput.value);
+            if (!price || price <= 0) return alert("Enter live price first");
             if (!qty || qty <= 0) return alert("Enter quantity to sell");
             const totalHeld = purchases.reduce((a,b)=>a+b.grams,0) - sales.reduce((a,b)=>a+b.grams,0);
             if (qty > totalHeld) return alert(`You only have ${totalHeld.toFixed(2)}g available`);
-            if (!livePrice || livePrice <= 0) return alert("Enter live price first");
 
             const s = {
                 id: Date.now(),
                 grams: qty,
-                pricePer10gm: livePrice,
-                date: new Date().toLocaleDateString()
+                pricePer10gm: price,
+                date: new Date().toLocaleDateString(),
+                type: 'sell'
             };
             sales.unshift(s);
             localStorage.setItem("goldSales", JSON.stringify(sales));
-            sellQtyInput.value = "";
-            displaySales();
+            transactionQtyInput.value = "";
+            displayTransactions();
             calculateSummary();
             calculateProfits();
         }
@@ -288,24 +259,31 @@
             if (!confirm("Delete this sale?")) return;
             sales = sales.filter(s => s.id !== id);
             localStorage.setItem("goldSales", JSON.stringify(sales));
-            displaySales();
+            displayTransactions();
             calculateSummary();
             calculateProfits();
         }
 
-        function displaySales() {
-            if (!sales.length) {
-                salesContainer.innerHTML = '<div class="no-sales">No sales yet.</div>';
+        // ---------- DISPLAY ALL TRANSACTIONS ----------
+        function displayTransactions() {
+            const allTransactions = [
+                ...purchases.map(p => ({...p, type: 'purchase'})),
+                ...sales.map(s => ({...s, type: 'sell', price: s.pricePer10gm}))
+            ].sort((a, b) => b.id - a.id); // newest first
+
+            if (!allTransactions.length) {
+                transactionsContainer.innerHTML = '<div class="no-transactions">No transactions yet.</div>';
                 return;
             }
-            salesContainer.innerHTML = sales.map(s => `
-                <div class="sale-item">
+
+            transactionsContainer.innerHTML = allTransactions.map(t => `
+                <div class="transaction-item ${t.type}">
                     <div>
-                        <div class="sale-amount">₹${s.pricePer10gm}</div>
-                        <small>${s.grams}g • ${s.date}</small>
+                        <div class="transaction-amount">₹${t.price}</div>
+                        <small>${t.grams}g • ${t.date}</small>
                     </div>
-                    <div class="sale-meta">
-                        <button class="delete-btn" onclick="deleteSale(${s.id})">X</button>
+                    <div class="transaction-meta">
+                        <button class="delete-btn" onclick="${t.type === 'purchase' ? `deletePurchase(${t.id})` : `deleteSale(${t.id})`}">X</button>
                     </div>
                 </div>`).join("");
         }
@@ -316,7 +294,7 @@
             let soldSoFar = 0;
             const totalSold = sales.reduce((a,b)=>a+b.grams,0);
 
-            for (const pur of purchases) {
+            for (const pur of purchases) {  // ← FIXED: Removed extra parenthesis
                 const available = pur.grams;
                 const taken = Math.min(available, Math.max(0, totalSold - soldSoFar));
                 const left = available - taken;
@@ -370,18 +348,14 @@
             // ---- Total P/L ----
             const totalProfit = realisedProfit + unrealisedProfit;
 
-            // ---- UI: Total Investment = cost of remaining gold ----
+            // ---- UI Updates ----
             totalInvestmentEl.textContent = `₹${costOfRemaining.toLocaleString(undefined, {minimumFractionDigits:0, maximumFractionDigits:0})}`;
-
-            // ---- Current Value (with color) ----
             currentValueEl.textContent = `₹${currentValue.toLocaleString(undefined, {minimumFractionDigits:0, maximumFractionDigits:0})}`;
             currentValueEl.className = currentValue >= costOfRemaining ? "amount profit" : "amount loss";
 
-            // ---- Break-even Price (per 10gm) ----
             const breakEvenPer10gm = remainingGrams > 0 ? (costOfRemaining / remainingGrams) * 10 : 0;
             breakEvenPriceEl.textContent = `₹${Math.round(breakEvenPer10gm)}`;
 
-            // ---- Other UI ----
             totalGramsEl.textContent = `${remainingGrams.toFixed(2)}g`;
 
             setPL(realisedPLEl, realisedProfit);
@@ -396,7 +370,7 @@
             el.className = val >= 0 ? "amount profit" : "amount loss";
         }
 
-        // ---------- PROFIT BREAKDOWN (ONLY REMAINING) ----------
+        // ---------- PROFIT BREAKDOWN ----------
         function calculateProfits() {
             livePrice = parseFloat(livePriceInput.value);
             if (!livePrice || livePrice <= 0) {
@@ -452,12 +426,19 @@
             localStorage.removeItem("goldPurchases");
             localStorage.removeItem("goldSales");
             localStorage.removeItem("liveGoldPrice");
-            displayPurchases(); displaySales(); calculateSummary(); calculateProfits();
+            displayTransactions();
+            calculateSummary();
+            calculateProfits();
             livePriceInput.value = "";
         }
 
         // ---------- EVENT LISTENERS ----------
-        livePriceInput.addEventListener("input", () => { calculateProfits(); calculateSummary(); });
+        livePriceInput.addEventListener("input", () => { 
+            livePrice = parseFloat(livePriceInput.value) || 0;
+            localStorage.setItem("liveGoldPrice", livePrice);
+            calculateProfits(); 
+            calculateSummary(); 
+        });
     </script>
 </body>
 </html>
