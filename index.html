@@ -99,7 +99,6 @@
 
         .summary-card #totalInvestment{color:#00ff99;}
         .summary-card #totalGrams{color:#ffd700;}
-        /* NEW – colour only P/L values */
         .summary-card .amount.profit{color:#00ff99;}
         .summary-card .amount.loss{color:#ff4b2b;}
 
@@ -178,11 +177,12 @@
             <h2 style="text-align:center; margin-bottom:20px;">Investment Summary</h2>
             <div class="summary-cards">
                 <div class="summary-card"><h3>Total P/L</h3><div class="amount" id="totalPL">₹0</div></div>
+                <div class="summary-card"><h3>Total Investment</h3><div class="amount" id="totalInvestment">₹0</div></div>
+                <div class="summary-card"><h3>Current Value</h3><div class="amount" id="currentValue">₹0</div></div>
+                <div class="summary-card"><h3>Break-even (per 10gm)</h3><div class="amount" id="breakEvenPrice">₹0</div></div>
                 <div class="summary-card"><h3>Withdraw P/L</h3><div class="amount" id="realisedPL">₹0</div></div>
                 <div class="summary-card"><h3>Unwithdraw P/L</h3><div class="amount" id="unrealisedPL">₹0</div></div>
-                <div class="summary-card"><h3>Total Investment</h3><div class="amount" id="totalInvestment">₹0</div></div>
                 <div class="summary-card"><h3>Total Gold (Remaining)</h3><div class="amount" id="totalGrams">0g</div></div>
-                <div class="summary-card"><h3>Average Price</h3><div class="amount" id="avgPrice">₹0/gm</div></div>
             </div>
         </div>
     </div>
@@ -204,10 +204,11 @@
         const salesContainer     = document.getElementById("salesContainer");
         const totalInvestmentEl  = document.getElementById("totalInvestment");
         const totalGramsEl       = document.getElementById("totalGrams");
-        const avgPriceEl         = document.getElementById("avgPrice");
         const realisedPLEl       = document.getElementById("realisedPL");
         const unrealisedPLEl     = document.getElementById("unrealisedPL");
         const totalPLEl          = document.getElementById("totalPL");
+        const currentValueEl     = document.getElementById("currentValue");
+        const breakEvenPriceEl   = document.getElementById("breakEvenPrice");
         const profitBreakdown    = document.getElementById("profitBreakdown");
         const profitDetails      = document.getElementById("profitDetails");
 
@@ -327,9 +328,8 @@
 
         // ---------- CALCULATIONS ----------
         function calculateSummary() {
-            const totalInvest = purchases.reduce((a,b)=>a + b.price * (b.grams/10), 0);
+            const totalInvestAll = purchases.reduce((a,b)=>a + b.price * (b.grams/10), 0);
             const totalGrams  = purchases.reduce((a,b)=>a + b.grams, 0);
-            const avgPrice    = totalGrams ? totalInvest / totalGrams : 0;
 
             const soldGrams   = sales.reduce((a,b)=>a + b.grams, 0);
             const remainingGrams = totalGrams - soldGrams;
@@ -370,10 +370,19 @@
             // ---- Total P/L ----
             const totalProfit = realisedProfit + unrealisedProfit;
 
-            // ---- UI ----
-            totalInvestmentEl.textContent = `₹${totalInvest.toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:0})}`;
-            totalGramsEl.textContent      = `${remainingGrams.toFixed(2)}g`;
-            avgPriceEl.textContent        = `₹${Math.round(avgPrice)}/gm`;
+            // ---- UI: Total Investment = cost of remaining gold ----
+            totalInvestmentEl.textContent = `₹${costOfRemaining.toLocaleString(undefined, {minimumFractionDigits:0, maximumFractionDigits:0})}`;
+
+            // ---- Current Value (with color) ----
+            currentValueEl.textContent = `₹${currentValue.toLocaleString(undefined, {minimumFractionDigits:0, maximumFractionDigits:0})}`;
+            currentValueEl.className = currentValue >= costOfRemaining ? "amount profit" : "amount loss";
+
+            // ---- Break-even Price (per 10gm) ----
+            const breakEvenPer10gm = remainingGrams > 0 ? (costOfRemaining / remainingGrams) * 10 : 0;
+            breakEvenPriceEl.textContent = `₹${Math.round(breakEvenPer10gm)}`;
+
+            // ---- Other UI ----
+            totalGramsEl.textContent = `${remainingGrams.toFixed(2)}g`;
 
             setPL(realisedPLEl, realisedProfit);
             setPL(unrealisedPLEl, unrealisedProfit);
