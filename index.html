@@ -8,257 +8,112 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
     <style>
         /* ---------- GLOBAL ---------- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin:0; padding:0; box-sizing:border-box; }
         body {
-            font-family: "Poppins", sans-serif;
-            background: radial-gradient(circle at top, #141e30, #243b55);
-            color: #eaeaea;
-            min-height: 100vh;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
+            font-family:"Poppins",sans-serif;
+            background:radial-gradient(circle at top,#141e30,#243b55);
+            color:#eaeaea;
+            min-height:100vh;
+            overflow-x:hidden;
+            display:flex;
+            flex-direction:column;
         }
-
-        h1,
-        h2,
-        h3 {
-            font-weight: 600;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 20px;
-            flex: 1;
-        }
+        h1,h2,h3{font-weight:600;}
+        .container{max-width:1200px;margin:30px auto;padding:20px;flex:1;}
 
         /* ---------- HEADER ---------- */
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            color: #fff;
-            letter-spacing: 1px;
-        }
-
-        .header p {
-            font-size: 1rem;
-            color: #b0b3b8;
-        }
+        .header{text-align:center;margin-bottom:40px;}
+        .header h1{font-size:2.5rem;color:#fff;letter-spacing:1px;}
+        .header p{font-size:1rem;color:#b0b3b8;}
 
         /* ---------- GRID LAYOUT ---------- */
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 30px;
-        }
-
-        @media (max-width: 900px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-        }
+        .main-content{display:grid;grid-template-columns:1fr 400px;gap:30px;}
+        @media (max-width:900px){.main-content{grid-template-columns:1fr;}}
 
         /* ---------- GLASS CARD ---------- */
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(10px);
-            transition: transform 0.2s ease;
+        .card{
+            background:rgba(255,255,255,0.05);
+            border:1px solid rgba(255,255,255,0.15);
+            border-radius:16px;
+            padding:25px;
+            box-shadow:0 8px 25px rgba(0,0,0,0.4);
+            backdrop-filter:blur(10px);
+            transition:transform .2s ease;
         }
-
-        .card:hover {
-            transform: translateY(-3px);
-        }
+        .card:hover{transform:translateY(-3px);}
 
         /* ---------- INPUT ---------- */
-        .input-group {
-            margin-bottom: 15px;
-            position: relative;
+        .input-group{margin-bottom:15px;position:relative;}
+        .input-group input{
+            width:100%;padding:12px 45px 12px 15px;
+            border:none;border-radius:12px;font-size:15px;
+            background:rgba(255,255,255,0.1);color:#fff;outline:none;
+            transition:all .3s;
         }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px 45px 12px 15px;
-            border: none;
-            border-radius: 12px;
-            font-size: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            outline: none;
-            transition: all 0.3s;
+        .input-group input:focus{
+            background:rgba(255,255,255,0.2);
+            box-shadow:0 0 0 2px #ffd700;
         }
-
-        .input-group input:focus {
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 0 2px #ffd700;
-        }
-
-        .input-group i {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #ffd700;
+        .input-group i{
+            position:absolute;right:15px;top:50%;transform:translateY(-50%);
+            color:#ffd700;
         }
 
         /* ---------- BUTTONS ---------- */
-        .btn {
-            flex: 1;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 15px;
-            padding: 12px 18px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
+        .btn{
+            flex:1;border:none;border-radius:10px;font-weight:600;
+            font-size:15px;padding:12px 18px;cursor:pointer;
+            transition:all .3s;text-transform:uppercase;
         }
+        .btn-primary{background:linear-gradient(135deg,#ffd700,#ffb700);color:#222;}
+        .btn-primary:hover{box-shadow:0 0 15px #ffd700;transform:translateY(-2px);}
+        .btn-danger{background:linear-gradient(135deg,#ff416c,#ff4b2b);color:#fff;}
+        .btn-danger:hover{box-shadow:0 0 15px rgba(255,75,43,.8);transform:translateY(-2px);}
+        .btn-success{background:linear-gradient(135deg,#28a745,#1e7e34);color:#fff;}
+        .btn-success:hover{box-shadow:0 0 15px #28a745;transform:translateY(-2px);}
 
-        .btn-primary {
-            background: linear-gradient(135deg, #ffd700, #ffb700);
-            color: #222;
+        /* ---------- PURCHASE / SALE LIST ---------- */
+        .purchase-item,.sale-item{
+            display:flex;justify-content:space-between;align-items:center;
+            background:rgba(255,255,255,0.08);
+            border-left:4px solid #ffd700;
+            border-radius:12px;padding:15px;margin-bottom:10px;
+            transition:all .3s ease;
         }
-
-        .btn-primary:hover {
-            box-shadow: 0 0 15px #ffd700;
-            transform: translateY(-2px);
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #ff416c, #ff4b2b);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            box-shadow: 0 0 15px rgba(255, 75, 43, 0.8);
-            transform: translateY(-2px);
-        }
-
-        /* ---------- PURCHASE LIST ---------- */
-        .purchase-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.08);
-            border-left: 4px solid #ffd700;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .purchase-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .purchase-amount {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #ffd700;
-        }
-
-        .purchase-meta {
-            text-align: right;
-        }
-
-        .delete-btn {
-            background: none;
-            border: none;
-            color: #ff6b6b;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .delete-btn:hover {
-            color: #ff1e56;
-            transform: scale(1.2);
-        }
+        .purchase-item:hover,.sale-item:hover{background:rgba(255,255,255,0.15);}
+        .purchase-amount,.sale-amount{font-size:1.1rem;font-weight:600;color:#ffd700;}
+        .purchase-meta,.sale-meta{text-align:right;}
+        .delete-btn{background:none;border:none;color:#ff6b6b;font-size:1.2rem;cursor:pointer;transition:.2s;}
+        .delete-btn:hover{color:#ff1e56;transform:scale(1.2);}
 
         /* ---------- SUMMARY ---------- */
-        .summary-section {
-            margin-top: 40px;
+        .summary-section{margin-top:40px;}
+        .summary-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
+        .summary-card{
+            background:rgba(255,255,255,0.08);border-radius:15px;
+            padding:20px;text-align:center;transition:all .3s;
         }
+        .summary-card:hover{background:rgba(255,255,255,0.15);}
+        .summary-card h3{font-size:1rem;color:#ccc;}
+        .summary-card .amount{font-size:1.8rem;font-weight:bold;color:#fff;}
 
-        .summary-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .summary-card {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            transition: all 0.3s;
-        }
-
-        .summary-card:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .summary-card h3 {
-            font-size: 1rem;
-            color: #ccc;
-        }
-
-        .summary-card .amount {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #fff;
-        }
-
-        .summary-card #totalInvestment {
-            color: #00ff99;
-        }
-
-        .summary-card #totalGrams {
-            color: gold;
-        }
+        .summary-card #totalInvestment{color:#00ff99;}
+        .summary-card #totalGrams{color:#ffd700;}
+        /* NEW – colour only P/L values */
+        .summary-card .amount.profit{color:#00ff99;}
+        .summary-card .amount.loss{color:#ff4b2b;}
 
         /* ---------- PROFIT SECTION ---------- */
-        .profit-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .profit {
-            color: #00ff99;
-        }
-
-        .loss {
-            color: #ff4b2b;
-        }
-
-        .no-purchases {
-            text-align: center;
-            color: #999;
-            font-style: italic;
-            padding: 20px;
-        }
+        .profit-item{display:flex;justify-content:space-between;padding:8px 0;
+            border-bottom:1px solid rgba(255,255,255,0.1);}
+        .profit{color:#00ff99;}
+        .loss{color:#ff4b2b;}
+        .no-purchases,.no-sales{text-align:center;color:#999;font-style:italic;padding:20px;}
 
         /* ---------- FOOTER ---------- */
-        footer {
-            text-align: center;
-            padding: 15px 0;
-            font-size: 0.9rem;
-            color: #aaa;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        footer{
+            text-align:center;padding:15px 0;font-size:0.9rem;color:#aaa;
+            border-top:1px solid rgba(255,255,255,0.1);
         }
     </style>
 </head>
@@ -266,31 +121,31 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1><i class="fa-solid fa-coins" style="color: gold;"></i> Gold Tracker</h1>
-            <p style="margin-top: 10px;">Track your gold purchases and monitor profits in style</p>
+            <h1>Gold Tracker</h1>
+            <p style="margin-top:10px;">Track purchases, sales and profit of **remaining** gold</p>
         </div>
 
         <div class="main-content">
             <!-- Left -->
             <div class="card">
-                <h3 style="margin-bottom: 10px;"><i class="fa-solid fa-broadcast-tower"></i> Live Gold Price</h3>
+                <h3 style="margin-bottom:10px;">Live Gold Price</h3>
                 <div class="input-group">
                     <input type="number" id="livePrice" placeholder="Current Price per 10gm (₹)" min="0" />
                     <i class="fa-solid fa-chart-line"></i>
                 </div>
+
                 <div id="profitBreakdown" style="display:none; margin-top:15px;">
-                    <h3 style="margin-top: 30px; margin-bottom: 20px;"><i class="fa-solid fa-coins"></i> Profit
-                        Breakdown</h3>
+                    <h3 style="margin-top:30px; margin-bottom:20px;">Profit Breakdown (Remaining Gold)</h3>
                     <div id="profitDetails" style="margin-top:10px;"></div>
                 </div>
             </div>
 
             <!-- Right -->
             <div class="card">
-                <h3><i class="fa-solid fa-list"></i> Purchase History</h3>
+                <h3>Purchase History</h3>
                 <div id="purchasesContainer" style="margin-top:20px;"></div>
-                <h4 style="margin-top:15px; margin-bottom:10px;"><i class="fa-solid fa-plus-circle"></i> Add Purchase
-                </h4>
+
+                <h4 style="margin-top:15px; margin-bottom:10px;">Add Purchase</h4>
                 <div class="input-group">
                     <input type="number" id="purchasePrice" placeholder="Purchase Price per 10gm (₹)" min="0" />
                     <i class="fa-solid fa-indian-rupee-sign"></i>
@@ -299,98 +154,85 @@
                     <input type="number" id="purchaseQty" placeholder="Quantity (grams)" min="1" />
                     <i class="fa-solid fa-weight-scale"></i>
                 </div>
-                <div style="display: flex; gap: 10px;">
-                    <button class="btn btn-primary" onclick="addPurchase()">
-                        <i class="fa-solid fa-cart-plus"></i> Add
-                    </button>
-                    <button class="btn btn-danger" onclick="clearAllPurchases()">
-                        <i class="fa-solid fa-trash"></i> Clear
-                    </button>
+                <div style="display:flex;gap:10px;">
+                    <button class="btn btn-primary" onclick="addPurchase()">Add</button>
+                    <button class="btn btn-danger" onclick="clearAllPurchases()">Clear</button>
                 </div>
+
+                <!-- ==== SELL SECTION ==== -->
+                <h4 style="margin-top:25px; margin-bottom:10px;">Sell Gold</h4>
+                <div class="input-group">
+                    <input type="number" id="sellQty" placeholder="Quantity to sell (grams)" min="0.01" step="0.01" />
+                    <i class="fa-solid fa-weight-scale"></i>
+                </div>
+                <div style="display:flex;gap:10px;">
+                    <button class="btn btn-success" onclick="sellGold()">Sell</button>
+                </div>
+
+                <h4 style="margin-top:20px; margin-bottom:10px;">Sale History</h4>
+                <div id="salesContainer" style="margin-top:10px;"></div>
             </div>
         </div>
 
         <div class="summary-section">
-            <h2 style="text-align:center; margin-bottom:20px;">
-                <i class="fa-solid fa-chart-pie"></i> Investment Summary
-            </h2>
+            <h2 style="text-align:center; margin-bottom:20px;">Investment Summary</h2>
             <div class="summary-cards">
-                <div class="summary-card">
-                    <h3>Total Investment</h3>
-                    <div class="amount" id="totalInvestment">₹0</div>
-                </div>
-                <div class="summary-card">
-                    <h3>Total Gold</h3>
-                    <div class="amount" id="totalGrams">0g</div>
-                </div>
-                <div class="summary-card">
-                    <h3>Average Price</h3>
-                    <div class="amount" id="avgPrice">₹0/gm</div>
-                </div>
+                <div class="summary-card"><h3>Total P/L</h3><div class="amount" id="totalPL">₹0</div></div>
+                <div class="summary-card"><h3>Withdraw P/L</h3><div class="amount" id="realisedPL">₹0</div></div>
+                <div class="summary-card"><h3>Unwithdraw P/L</h3><div class="amount" id="unrealisedPL">₹0</div></div>
+                <div class="summary-card"><h3>Total Investment</h3><div class="amount" id="totalInvestment">₹0</div></div>
+                <div class="summary-card"><h3>Total Gold (Remaining)</h3><div class="amount" id="totalGrams">0g</div></div>
+                <div class="summary-card"><h3>Average Price</h3><div class="amount" id="avgPrice">₹0/gm</div></div>
             </div>
         </div>
     </div>
 
-    <footer>
-        Developed by Divyesh Rupareliya
-    </footer>
+    <footer>Developed by Divyesh Rupareliya</footer>
 
     <script>
+        // ---------- DATA ----------
         let purchases = JSON.parse(localStorage.getItem("goldPurchases")) || [];
+        let sales     = JSON.parse(localStorage.getItem("goldSales"))      || [];
         let livePrice = parseFloat(localStorage.getItem("liveGoldPrice")) || 0;
 
-        const purchaseInput = document.getElementById("purchasePrice");
-        const qtyInput = document.getElementById("purchaseQty");
-        const livePriceInput = document.getElementById("livePrice");
+        // ---------- ELEMENTS ----------
+        const purchaseInput   = document.getElementById("purchasePrice");
+        const qtyInput        = document.getElementById("purchaseQty");
+        const livePriceInput  = document.getElementById("livePrice");
+        const sellQtyInput    = document.getElementById("sellQty");
         const purchasesContainer = document.getElementById("purchasesContainer");
-        const totalInvestmentEl = document.getElementById("totalInvestment");
-        const totalGramsEl = document.getElementById("totalGrams");
-        const avgPriceEl = document.getElementById("avgPrice");
-        const profitBreakdown = document.getElementById("profitBreakdown");
-        const profitDetails = document.getElementById("profitDetails");
+        const salesContainer     = document.getElementById("salesContainer");
+        const totalInvestmentEl  = document.getElementById("totalInvestment");
+        const totalGramsEl       = document.getElementById("totalGrams");
+        const avgPriceEl         = document.getElementById("avgPrice");
+        const realisedPLEl       = document.getElementById("realisedPL");
+        const unrealisedPLEl     = document.getElementById("unrealisedPL");
+        const totalPLEl          = document.getElementById("totalPL");
+        const profitBreakdown    = document.getElementById("profitBreakdown");
+        const profitDetails      = document.getElementById("profitDetails");
 
+        // ---------- INITIAL LOAD ----------
         document.addEventListener("DOMContentLoaded", () => {
             if (livePrice) livePriceInput.value = livePrice;
             displayPurchases();
+            displaySales();
             calculateSummary();
             calculateProfits();
         });
 
+        // ---------- PURCHASE ----------
         function addPurchase() {
             const price = parseFloat(purchaseInput.value);
-            const qty = parseFloat(qtyInput.value);
-            if (!price || price <= 0) return alert("Enter valid price per 10gm");
-            if (!qty || qty <= 0) return alert("Enter valid quantity (grams)");
+            const qty   = parseFloat(qtyInput.value);
+            if (!price || price <= 0) return alert("Enter price per 10gm");
+            if (!qty   || qty   <= 0) return alert("Enter quantity (grams)");
             const p = { id: Date.now(), price, grams: qty, date: new Date().toLocaleDateString() };
             purchases.unshift(p);
             localStorage.setItem("goldPurchases", JSON.stringify(purchases));
-            purchaseInput.value = "";
-            qtyInput.value = "";
+            purchaseInput.value = ""; qtyInput.value = "";
             displayPurchases();
             calculateSummary();
             calculateProfits();
-        }
-
-        function displayPurchases() {
-            if (!purchases.length) {
-                purchasesContainer.innerHTML =
-                    '<div class="no-purchases"><i class="fa-solid fa-inbox"></i> No purchases yet.</div>';
-                return;
-            }
-            purchasesContainer.innerHTML = purchases
-                .map(p => `
-          <div class="purchase-item">
-            <div>
-              <div class="purchase-amount">₹${p.price}</div>
-              <small>${p.grams}g • ${p.date}</small>
-            </div>
-            <div class="purchase-meta">
-              <button class="delete-btn" onclick="deletePurchase(${p.id})">
-                <i class="fa-solid fa-times"></i>
-              </button>
-            </div>
-          </div>`)
-                .join("");
         }
 
         function deletePurchase(id) {
@@ -402,65 +244,211 @@
             calculateProfits();
         }
 
-        function calculateSummary() {
-            const totalInvestment = purchases.reduce((a, b) => a + b.price * (b.grams / 10), 0);
-            const totalGrams = purchases.reduce((a, b) => a + b.grams, 0);
-            const avgPrice = totalGrams ? totalInvestment / totalGrams : 0;
-            totalInvestmentEl.textContent = `₹${totalInvestment.toLocaleString()}`;
-            totalGramsEl.textContent = `${totalGrams}g`;
-            avgPriceEl.textContent = `₹${Math.round(avgPrice)}/gm`;
+        function displayPurchases() {
+            if (!purchases.length) {
+                purchasesContainer.innerHTML = '<div class="no-purchases">No purchases yet.</div>';
+                return;
+            }
+            purchasesContainer.innerHTML = purchases.map(p => `
+                <div class="purchase-item">
+                    <div>
+                        <div class="purchase-amount">₹${p.price}</div>
+                        <small>${p.grams}g • ${p.date}</small>
+                    </div>
+                    <div class="purchase-meta">
+                        <button class="delete-btn" onclick="deletePurchase(${p.id})">X</button>
+                    </div>
+                </div>`).join("");
         }
 
+        // ---------- SELL ----------
+        function sellGold() {
+            const qty = parseFloat(sellQtyInput.value);
+            if (!qty || qty <= 0) return alert("Enter quantity to sell");
+            const totalHeld = purchases.reduce((a,b)=>a+b.grams,0) - sales.reduce((a,b)=>a+b.grams,0);
+            if (qty > totalHeld) return alert(`You only have ${totalHeld.toFixed(2)}g available`);
+            if (!livePrice || livePrice <= 0) return alert("Enter live price first");
+
+            const s = {
+                id: Date.now(),
+                grams: qty,
+                pricePer10gm: livePrice,
+                date: new Date().toLocaleDateString()
+            };
+            sales.unshift(s);
+            localStorage.setItem("goldSales", JSON.stringify(sales));
+            sellQtyInput.value = "";
+            displaySales();
+            calculateSummary();
+            calculateProfits();
+        }
+
+        function deleteSale(id) {
+            if (!confirm("Delete this sale?")) return;
+            sales = sales.filter(s => s.id !== id);
+            localStorage.setItem("goldSales", JSON.stringify(sales));
+            displaySales();
+            calculateSummary();
+            calculateProfits();
+        }
+
+        function displaySales() {
+            if (!sales.length) {
+                salesContainer.innerHTML = '<div class="no-sales">No sales yet.</div>';
+                return;
+            }
+            salesContainer.innerHTML = sales.map(s => `
+                <div class="sale-item">
+                    <div>
+                        <div class="sale-amount">₹${s.pricePer10gm}</div>
+                        <small>${s.grams}g • ${s.date}</small>
+                    </div>
+                    <div class="sale-meta">
+                        <button class="delete-btn" onclick="deleteSale(${s.id})">X</button>
+                    </div>
+                </div>`).join("");
+        }
+
+        // ---------- FIFO HELPERS ----------
+        function getRemainingLots() {
+            const remaining = [];
+            let soldSoFar = 0;
+            const totalSold = sales.reduce((a,b)=>a+b.grams,0);
+
+            for (const pur of purchases) {
+                const available = pur.grams;
+                const taken = Math.min(available, Math.max(0, totalSold - soldSoFar));
+                const left = available - taken;
+                if (left > 0) remaining.push({price: pur.price, grams: left});
+                soldSoFar += taken;
+            }
+            return remaining;
+        }
+
+        // ---------- CALCULATIONS ----------
+        function calculateSummary() {
+            const totalInvest = purchases.reduce((a,b)=>a + b.price * (b.grams/10), 0);
+            const totalGrams  = purchases.reduce((a,b)=>a + b.grams, 0);
+            const avgPrice    = totalGrams ? totalInvest / totalGrams : 0;
+
+            const soldGrams   = sales.reduce((a,b)=>a + b.grams, 0);
+            const remainingGrams = totalGrams - soldGrams;
+
+            // ---- Realised P/L (FIFO) ----
+            let realisedProfit = 0;
+            let soldSoFar = 0;
+            for (const sale of sales) {
+                let gramsLeft = sale.grams;
+                let cost = 0;
+                for (const pur of purchases) {
+                    if (gramsLeft <= 0) break;
+                    const alreadySold = pur.soldTmp || 0;
+                    const available = pur.grams - alreadySold;
+                    if (available <= 0) continue;
+                    const take = Math.min(available, gramsLeft);
+                    cost += take * (pur.price / 10);
+                    gramsLeft -= take;
+                    pur.soldTmp = (pur.soldTmp || 0) + take;
+                }
+                const revenue = sale.grams * (sale.pricePer10gm / 10);
+                realisedProfit += revenue - cost;
+                soldSoFar += sale.grams;
+            }
+            purchases.forEach(p => delete p.soldTmp);
+
+            // ---- Cost of remaining gold (FIFO) ----
+            let costOfRemaining = 0;
+            const remainingLots = getRemainingLots();
+            remainingLots.forEach(lot => {
+                costOfRemaining += lot.price * (lot.grams / 10);
+            });
+
+            // ---- Unrealised P/L ----
+            const currentValue = remainingGrams * (livePrice / 10);
+            const unrealisedProfit = currentValue - costOfRemaining;
+
+            // ---- Total P/L ----
+            const totalProfit = realisedProfit + unrealisedProfit;
+
+            // ---- UI ----
+            totalInvestmentEl.textContent = `₹${totalInvest.toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:0})}`;
+            totalGramsEl.textContent      = `${remainingGrams.toFixed(2)}g`;
+            avgPriceEl.textContent        = `₹${Math.round(avgPrice)}/gm`;
+
+            setPL(realisedPLEl, realisedProfit);
+            setPL(unrealisedPLEl, unrealisedProfit);
+            setPL(totalPLEl, totalProfit);
+        }
+
+        function setPL(el, val) {
+            const abs = Math.abs(val).toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:0});
+            const sign = val >= 0 ? "+" : "-";
+            el.textContent = `${sign}₹${abs}`;
+            el.className = val >= 0 ? "amount profit" : "amount loss";
+        }
+
+        // ---------- PROFIT BREAKDOWN (ONLY REMAINING) ----------
         function calculateProfits() {
             livePrice = parseFloat(livePriceInput.value);
-            if (!livePrice || livePrice <= 0 || !purchases.length) {
+            if (!livePrice || livePrice <= 0) {
                 profitBreakdown.style.display = "none";
                 return;
             }
             localStorage.setItem("liveGoldPrice", livePrice);
 
-            const totalInvestment = purchases.reduce((a, b) => a + b.price * (b.grams / 10), 0);
-            const totalCurrentValue = (livePrice / 10) * purchases.reduce((a, b) => a + b.grams, 0);
-            const totalProfit = totalCurrentValue - totalInvestment;
-            const totalProfitPercent = (totalProfit / totalInvestment) * 100;
+            const remainingLots = getRemainingLots();
+            if (!remainingLots.length) {
+                profitBreakdown.style.display = "none";
+                return;
+            }
 
-            const profitList = purchases.map(p => {
-                const currValue = (livePrice / 10) * p.grams;
-                const investValue = p.price * (p.grams / 10);
-                const profit = currValue - investValue;
-                const profitPercent = (profit / investValue) * 100;
+            let totalInvest = 0;
+            let totalCurrent = 0;
+            const rows = remainingLots.map(lot => {
+                const invest = lot.price * (lot.grams / 10);
+                const current = (livePrice / 10) * lot.grams;
+                const profit = current - invest;
+                const pct = invest ? (profit / invest) * 100 : 0;
+
+                totalInvest += invest;
+                totalCurrent += current;
+
                 return `
-            <div class="profit-item">
-              <span>₹${p.price} × ${p.grams}g</span>
-              <span class="${profit >= 0 ? "profit" : "loss"}">
-                ₹${Math.round(profit).toLocaleString()} (${profitPercent.toFixed(1)}%)
-              </span>
-            </div>`;
+                    <div class="profit-item">
+                        <span>₹${lot.price} × ${lot.grams}g</span>
+                        <span class="${profit>=0?"profit":"loss"}">
+                            ₹${Math.round(profit).toLocaleString()} (${pct.toFixed(1)}%)
+                        </span>
+                    </div>`;
             }).join("");
 
-            profitDetails.innerHTML = profitList +
+            const totalProfit = totalCurrent - totalInvest;
+            const totalPct = totalInvest ? (totalProfit / totalInvest) * 100 : 0;
+
+            profitDetails.innerHTML = rows +
                 `<div class="profit-item">
-                   <strong>Total Profit</strong>
-                   <strong class="${totalProfit >= 0 ? "profit" : "loss"}">
-                     ₹${Math.round(totalProfit).toLocaleString()} (${totalProfitPercent.toFixed(2)}%)
-                   </strong>
+                    <strong>Total (remaining)</strong>
+                    <strong class="${totalProfit>=0?"profit":"loss"}">
+                        ₹${Math.round(totalProfit).toLocaleString()} (${totalPct.toFixed(2)}%)
+                    </strong>
                  </div>`;
 
             profitBreakdown.style.display = "block";
         }
 
+        // ---------- CLEAR ALL ----------
         function clearAllPurchases() {
-            if (!confirm("Clear all purchases?")) return;
-            purchases = [];
-            localStorage.clear();
-            displayPurchases();
-            calculateSummary();
-            profitBreakdown.style.display = "none";
+            if (!confirm("Clear all purchases and sales?")) return;
+            purchases = []; sales = [];
+            localStorage.removeItem("goldPurchases");
+            localStorage.removeItem("goldSales");
+            localStorage.removeItem("liveGoldPrice");
+            displayPurchases(); displaySales(); calculateSummary(); calculateProfits();
             livePriceInput.value = "";
         }
 
-        livePriceInput.addEventListener("input", calculateProfits);
+        // ---------- EVENT LISTENERS ----------
+        livePriceInput.addEventListener("input", () => { calculateProfits(); calculateSummary(); });
     </script>
 </body>
-
 </html>
